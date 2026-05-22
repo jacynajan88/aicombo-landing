@@ -1,6 +1,4 @@
 {
   "buildCommand": "",
-  "outputDirectory": "public",
-  "framework": "html",
-  "cleanUrls": true
+  "outputDirectory": "."
 }
