@@ -1,754 +1,641 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>aicombo — Automatyzacja Content Marketingu</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #B026FF;
-            --primary-light: #D166FF;
-            --bg-dark: #0A0A0A;
-            --bg-secondary: #1A1A1A;
-            --text-primary: #FFFFFF;
-            --text-secondary: #B0B0B0;
-            --border: #2A2A2A;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            padding: 1.2rem 2rem;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -1px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-        }
-
-        /* Hero Section */
-        .hero {
-            margin-top: 80px;
-            padding: 6rem 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(176, 38, 255, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -20%;
-            left: -5%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(176, 38, 255, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-            letter-spacing: -1px;
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 2.5rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 4rem;
-        }
-
-        .btn {
-            padding: 1rem 2.5rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            white-space: nowrap;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: var(--bg-dark);
-            box-shadow: 0 0 20px rgba(176, 38, 255, 0.3);
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-light);
-            box-shadow: 0 0 30px rgba(176, 38, 255, 0.5);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            background: transparent;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(176, 38, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .trust-badges {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            flex-wrap: wrap;
-            margin-top: 3rem;
-        }
-
-        .badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .badge::before {
-            content: '✓';
-            color: var(--primary);
-            font-weight: bold;
-        }
-
-        /* Section Container */
-        section {
-            padding: 6rem 2rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        section h2 {
-            font-size: clamp(2rem, 5vw, 3rem);
-            margin-bottom: 3rem;
-            text-align: center;
-            letter-spacing: -0.5px;
-        }
-
-        /* Pricing Section */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .pricing-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .pricing-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .pricing-card:hover {
-            border-color: var(--primary);
-            box-shadow: 0 8px 32px rgba(176, 38, 255, 0.15);
-            transform: translateY(-5px);
-        }
-
-        .pricing-card:hover::before {
-            opacity: 1;
-        }
-
-        .pricing-card.featured {
-            border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(176, 38, 255, 0.05), transparent);
-            transform: scale(1.05);
-        }
-
-        .plan-name {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .plan-price {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin: 1rem 0;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .plan-price span {
-            font-size: 1rem;
-            color: var(--text-secondary);
-        }
-
-        .plan-features {
-            list-style: none;
-            margin: 2rem 0;
-        }
-
-        .plan-features li {
-            padding: 0.8rem 0;
-            color: var(--text-secondary);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .plan-features li::before {
-            content: '→';
-            color: var(--primary);
-            font-weight: bold;
-        }
-
-        .plan-features li:last-child {
-            border-bottom: none;
-        }
-
-        /* How It Works */
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .step {
-            position: relative;
-            padding: 2rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .step-number {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 1.5rem;
-            margin: 0 auto 1.5rem;
-            color: var(--bg-dark);
-        }
-
-        .step h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-
-        .step p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        /* FAQ */
-        .faq-container {
-            max-width: 800px;
-            margin: 3rem auto 0;
-        }
-
-        .faq-item {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .faq-item:hover {
-            border-color: var(--primary);
-        }
-
-        .faq-question {
-            padding: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            user-select: none;
-        }
-
-        .faq-toggle {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            transition: transform 0.3s ease;
-        }
-
-        .faq-item.active .faq-toggle {
-            transform: rotate(180deg);
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            color: var(--text-secondary);
-        }
-
-        .faq-item.active .faq-answer {
-            max-height: 300px;
-            padding: 0 1.5rem 1.5rem;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            text-align: center;
-            background: linear-gradient(135deg, rgba(176, 38, 255, 0.1), transparent);
-            border: 1px solid var(--primary);
-            border-radius: 12px;
-            padding: 4rem 2rem;
-            margin-top: 3rem;
-        }
-
-        .cta-section h2 {
-            margin-bottom: 1.5rem;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-            padding: 2rem;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            nav {
-                padding: 1rem;
-            }
-
-            .logo {
-                font-size: 1.2rem;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            .pricing-card.featured {
-                transform: scale(1);
-            }
-
-            section {
-                padding: 4rem 1rem;
-            }
-
-            .cta-buttons {
-                gap: 1rem;
-            }
-
-            .btn {
-                padding: 0.9rem 1.8rem;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-content {
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        section {
-            animation: fadeInUp 0.6s ease-out;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>aicombo.pl — marketing wideo tworzony przez AI (projekt demonstracyjny)</title>
+<meta name="description" content="Projekt demonstracyjny: Reelsy i TikToki dla małych firm usługowych produkowane w 100% z generatywnej AI — legalnie, tanio, z jawnym oznaczeniem. Postacie syntetyczne.">
+
+<!-- Open Graph: ładny podgląd linku w bio IG/TikTok -->
+<meta property="og:title" content="aicombo.pl — marketing wideo tworzony przez AI">
+<meta property="og:description" content="Projekt demonstracyjny. Reelsy dla usług lokalnych w 100% z AI. Postacie syntetyczne, treści oznaczone zgodnie z EU AI Act.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aicombo.pl/">
+<meta property="og:locale" content="pl_PL">
+<!-- Obraz podglądu linku 1200×630 — plik og-cover.jpg wgraj obok index.html -->
+<meta property="og:image" content="https://aicombo.pl/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230C0B09'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' fill='%23C8A35F' text-anchor='middle'%3Ea.%3C/text%3E%3C/svg%3E">
+
+<!-- Typografia self-hosted (woff2 w folderze fonts/): Marcellus + Instrument Sans + IBM Plex Mono.
+     Brak zapytań do CDN Google Fonts = szybciej + brak przekazywania IP użytkownika do Google (GDPR). -->
+
+<!-- ============================================================
+     GOOGLE ANALYTICS 4 + CONSENT MODE v2
+     ★ PLACEHOLDER: podmień G-SGJZ51TCNE na własny Measurement ID
+       (w DWÓCH miejscach: w src skryptu i w gtag('config', ...)).
+     Consent Mode: domyślnie brak zgody na cookies — eventy i tak
+     są wysyłane jako anonimowe "cookieless pings", więc kliknięcia
+     CTA (główny wskaźnik badania) są liczone także bez zgody.
+     ============================================================ -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  // Domyślny stan zgody PRZED załadowaniem gtag.js:
+  gtag('consent', 'default', {
+    'analytics_storage': 'denied',
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'wait_for_update': 500
+  });
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SGJZ51TCNE"></script>
+<script>
+  gtag('js', new Date());
+  gtag('config', 'G-SGJZ51TCNE'); // ★ PLACEHOLDER: Measurement ID
+</script>
+
+<style>
+/* ============ FONTY SELF-HOSTED (folder fonts/) ============ */
+@font-face{
+  font-family:"Marcellus";
+  src:url("fonts/marcellus.woff2") format("woff2");
+  font-weight:400;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:"Instrument Sans"; /* font wariacyjny — jeden plik pokrywa wagi 400–700 */
+  src:url("fonts/instrument-sans.woff2") format("woff2");
+  font-weight:400 700;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:"IBM Plex Mono";
+  src:url("fonts/ibm-plex-mono.woff2") format("woff2");
+  font-weight:400;font-style:normal;font-display:swap;
+}
+
+/* ============ TOKENY ============ */
+:root{
+  --ink:#0C0B09;          /* tło: czerń z ciepłym podtonem */
+  --ink-2:#14110C;        /* powierzchnie uniesione */
+  --ink-3:#1B1710;        /* karty */
+  --line:rgba(200,163,95,.18);
+  --brass:#C8A35F;        /* mosiądz — akcent */
+  --brass-2:#E8CD92;      /* mosiądz jasny — hover/podkreślenia */
+  --bone:#EDE7DA;         /* tekst główny — ciepła kość */
+  --smoke:#A39A86;        /* tekst drugorzędny */
+  --shadow:0 24px 60px rgba(0,0,0,.55);
+  --r:18px;
+  --max:1080px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+body{
+  background:var(--ink);
+  color:var(--bone);
+  font-family:"Instrument Sans",system-ui,-apple-system,sans-serif;
+  font-size:16.5px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--brass);color:var(--ink)}
+
+h1,h2,.wordmark{font-family:"Marcellus",Georgia,serif;font-weight:400;line-height:1.12;letter-spacing:.01em}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase}
+
+a{color:var(--brass-2)}
+:focus-visible{outline:2px solid var(--brass-2);outline-offset:3px;border-radius:4px}
+
+.wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+section{padding:72px 0}
+@media(min-width:720px){section{padding:104px 0}}
+
+/* ============ TOP BAR ============ */
+.topbar{
+  position:sticky;top:0;z-index:40;
+  background:rgba(12,11,9,.82);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.wordmark{font-size:1.3rem;color:var(--bone);text-decoration:none}
+.wordmark em{font-style:normal;color:var(--brass)}
+.topbar .mono{color:var(--smoke)}
+@media(max-width:480px){.topbar .mono{font-size:.6rem}}
+
+/* ============ HERO ============ */
+.hero{position:relative;padding:64px 0 80px}
+.hero::before{ /* ciepła poświata żarówki Edisona */
+  content:"";position:absolute;inset:-30% -10% auto;height:120%;
+  background:radial-gradient(560px 420px at 78% 8%,rgba(200,163,95,.13),transparent 65%);
+  pointer-events:none;
+}
+.hero .wrap{position:relative;display:grid;gap:48px}
+@media(min-width:880px){
+  .hero .wrap{grid-template-columns:1.15fr .85fr;align-items:center}
+  .hero{padding:88px 0 110px}
+}
+.badge{
+  display:inline-flex;align-items:center;gap:.55em;
+  border:1px solid var(--line);border-radius:999px;
+  padding:.5em 1.05em;color:var(--brass-2);
+  background:rgba(200,163,95,.07);
+  margin-bottom:26px;
+}
+.hero h1{font-size:clamp(2.1rem,5.6vw,3.5rem);margin-bottom:22px}
+.hero h1 .dash{color:var(--brass)}
+.lead{color:var(--smoke);font-size:clamp(1rem,2.2vw,1.16rem);max-width:34em;margin-bottom:34px}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5em;
+  font:600 1rem "Instrument Sans",sans-serif;
+  padding:1em 1.7em;border-radius:12px;cursor:pointer;
+  text-decoration:none;border:1px solid transparent;
+  transition:transform .15s ease,background .15s ease,border-color .15s ease;
+}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--brass);color:#161208;border-color:var(--brass)}
+.btn-primary:hover{background:var(--brass-2);border-color:var(--brass-2)}
+.btn-ghost{background:transparent;color:var(--bone);border-color:rgba(237,231,218,.28)}
+.btn-ghost:hover{border-color:var(--brass);color:var(--brass-2)}
+@media(max-width:480px){.cta-row .btn{flex:1 1 100%}}
+
+/* --- sygnatura: ramka 9:16 z shimmerem generowania --- */
+.phone{
+  position:relative;aspect-ratio:9/16;width:min(310px,80vw);
+  margin:0 auto;border-radius:26px;
+  background:linear-gradient(165deg,var(--ink-3),#0E0C08 60%);
+  border:1px solid var(--line);box-shadow:var(--shadow);
+  overflow:hidden;transform:rotate(2.2deg);
+}
+@media(min-width:880px){.phone{transform:rotate(3deg) translateY(-6px)}}
+.phone::after{ /* przesuwający się pasek „generowania" */
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(115deg,transparent 30%,rgba(232,205,146,.10) 48%,rgba(232,205,146,.20) 50%,rgba(232,205,146,.10) 52%,transparent 70%);
+  background-size:240% 240%;
+  animation:shimmer 4.2s ease-in-out infinite;
+}
+@keyframes shimmer{0%{background-position:120% 0}100%{background-position:-120% 0}}
+.phone-inner{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:18px;z-index:2}
+.tag{align-self:flex-start;background:rgba(12,11,9,.75);border:1px solid var(--line);border-radius:8px;padding:.45em .8em;color:var(--brass-2)}
+.phone-bottom{display:flex;flex-direction:column;gap:8px}
+.fake-bar{height:7px;border-radius:99px;background:rgba(237,231,218,.12)}
+.fake-bar.b1{width:72%}.fake-bar.b2{width:46%}
+.play{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:62px;height:62px;border-radius:50%;
+  border:1px solid var(--line);background:rgba(12,11,9,.6);
+  display:grid;place-items:center;color:var(--brass-2);font-size:1.2rem;
+}
+
+/* ============ NAGŁÓWKI SEKCJI ============ */
+.eyebrow{color:var(--brass);margin-bottom:14px;display:block}
+h2{font-size:clamp(1.7rem,4vw,2.4rem);margin-bottom:18px;max-width:18em}
+.sub{color:var(--smoke);max-width:38em}
+
+/* ============ KROKI (pipeline) ============ */
+.steps{border-top:1px solid var(--line)}
+.steps-grid{display:grid;gap:0;margin-top:44px;position:relative}
+@media(min-width:760px){.steps-grid{grid-template-columns:repeat(3,1fr);gap:34px}}
+.step{
+  position:relative;padding:30px 0 30px 34px;
+  border-left:1px solid var(--line);
+}
+@media(min-width:760px){
+  .step{border-left:none;border-top:1px solid var(--line);padding:30px 8px 0 0}
+}
+.step::before{ /* mosiężny węzeł na szynie pipeline'u */
+  content:"";position:absolute;left:-5px;top:42px;width:9px;height:9px;
+  border-radius:50%;background:var(--brass);box-shadow:0 0 0 5px rgba(200,163,95,.12);
+}
+@media(min-width:760px){.step::before{left:0;top:-5px}}
+.step .mono{color:var(--smoke);display:block;margin-bottom:12px}
+.step h3{font-size:1.18rem;font-weight:600;margin-bottom:8px}
+.step h3 .tool{color:var(--brass-2)}
+.step p{color:var(--smoke);font-size:.97rem}
+
+/* ============ GALERIA DEMO ============ */
+.gallery{background:var(--ink-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.demo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:44px}
+@media(min-width:760px){.demo-grid{grid-template-columns:repeat(3,1fr);gap:22px}}
+.demo-card{display:flex;flex-direction:column;gap:10px}
+.demo-ph{
+  position:relative;aspect-ratio:9/16;border-radius:var(--r);
+  background:linear-gradient(170deg,var(--ink-3),#0D0B07);
+  border:1px solid var(--line);overflow:hidden;
+}
+.demo-ph::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(115deg,transparent 35%,rgba(232,205,146,.07) 50%,transparent 65%);
+  background-size:240% 240%;animation:shimmer 5.5s ease-in-out infinite;
+}
+.demo-ph .mono{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  color:var(--smoke);white-space:nowrap;
+}
+.demo-card video{ /* style gotowe pod podmianę placeholdera na <video> */
+  width:100%;aspect-ratio:9/16;border-radius:var(--r);
+  border:1px solid var(--line);object-fit:cover;display:block;background:#000;
+}
+.demo-card figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.demo-card figcaption .name{font-weight:600;font-size:.92rem}
+.demo-card figcaption .mono{color:var(--brass)}
+@media(max-width:480px){.demo-card figcaption .name{font-size:.8rem}}
+
+/* ============ PRZEJRZYSTOŚĆ ============ */
+.trust .panel{
+  margin-top:40px;border-left:3px solid var(--brass);
+  background:var(--ink-2);border-radius:0 var(--r) var(--r) 0;
+  padding:34px 30px;
+}
+.trust .panel p.big{font-size:1.12rem;max-width:42em}
+.trust ul{list-style:none;margin-top:24px;display:grid;gap:12px}
+@media(min-width:760px){.trust ul{grid-template-columns:repeat(3,1fr);gap:22px}}
+.trust li{color:var(--smoke);font-size:.95rem;padding-left:1.4em;position:relative}
+.trust li::before{content:"—";position:absolute;left:0;color:var(--brass)}
+
+/* ============ DRUGIE CTA ============ */
+.cta2{text-align:center}
+.cta2 h2{margin-inline:auto}
+.cta2 .cta-row{justify-content:center;margin-top:30px}
+
+/* ============ STOPKA ============ */
+footer{border-top:1px solid var(--line);padding:48px 0 56px;color:var(--smoke);font-size:.86rem}
+footer .disclaimer{max-width:62em;margin-bottom:22px;line-height:1.7}
+footer .disclaimer strong{color:var(--bone);font-weight:600}
+footer .meta{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline}
+
+/* ============ MODAL ============ */
+.modal-backdrop{
+  position:fixed;inset:0;z-index:60;background:rgba(7,6,4,.7);backdrop-filter:blur(5px);
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.modal-backdrop.open{display:flex}
+.modal{
+  background:var(--ink-2);border:1px solid var(--line);border-radius:var(--r);
+  max-width:480px;width:100%;padding:34px 30px;box-shadow:var(--shadow);position:relative;
+}
+.modal h3{font-family:"Marcellus",serif;font-weight:400;font-size:1.4rem;margin-bottom:14px}
+.modal p{color:var(--smoke);margin-bottom:22px}
+.modal .btn{width:100%}
+.modal-close{
+  position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:10px;
+  background:transparent;border:1px solid var(--line);color:var(--smoke);
+  font-size:1.05rem;cursor:pointer;
+}
+.modal-close:hover{color:var(--bone);border-color:var(--brass)}
+
+/* ============ BANER ZGODY ============ */
+.consent{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;
+  background:rgba(20,17,12,.97);border-top:1px solid var(--line);
+  padding:16px 0;display:none;
+}
+.consent.show{display:block}
+.consent .wrap{display:flex;flex-wrap:wrap;gap:12px 22px;align-items:center;justify-content:space-between}
+.consent p{color:var(--smoke);font-size:.82rem;max-width:46em}
+.consent .row{display:flex;gap:10px}
+.consent .btn{padding:.6em 1.1em;font-size:.85rem;border-radius:9px}
+</style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="logo">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; margin-right: 0.5rem; vertical-align: middle;">
-                <!-- Central node -->
-                <circle cx="16" cy="16" r="4" fill="url(#gradient1)" />
-                
-                <!-- Connecting lines -->
-                <line x1="16" y1="16" x2="8" y2="8" stroke="url(#gradient1)" stroke-width="1.5" stroke-linecap="round" opacity="0.7" />
-                <line x1="16" y1="16" x2="24" y2="8" stroke="url(#gradient1)" stroke-width="1.5" stroke-linecap="round" opacity="0.7" />
-                <line x1="16" y1="16" x2="8" y2="24" stroke="url(#gradient1)" stroke-width="1.5" stroke-linecap="round" opacity="0.7" />
-                <line x1="16" y1="16" x2="24" y2="24" stroke="url(#gradient1)" stroke-width="1.5" stroke-linecap="round" opacity="0.7" />
-                <line x1="16" y1="16" x2="16" y2="4" stroke="url(#gradient1)" stroke-width="1.5" stroke-linecap="round" opacity="0.5" />
-                <line x1="16" y1="16" x2="16" y2="28" stroke="url(#gradient1)" stroke-width="1.5" stroke-linecap="round" opacity="0.5" />
-                
-                <!-- Outer nodes -->
-                <circle cx="8" cy="8" r="2" fill="url(#gradient1)" opacity="0.8" />
-                <circle cx="24" cy="8" r="2" fill="url(#gradient1)" opacity="0.8" />
-                <circle cx="8" cy="24" r="2" fill="url(#gradient1)" opacity="0.8" />
-                <circle cx="24" cy="24" r="2" fill="url(#gradient1)" opacity="0.8" />
-                <circle cx="16" cy="4" r="2" fill="url(#gradient1)" opacity="0.6" />
-                <circle cx="16" cy="28" r="2" fill="url(#gradient1)" opacity="0.6" />
-                
-                <!-- Gradient definition -->
-                <defs>
-                    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#B026FF;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#D166FF;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-            </svg>
-            AiCombo
+
+<!-- ================= TOP BAR ================= -->
+<header class="topbar">
+  <div class="wrap">
+    <a class="wordmark" href="#" aria-label="aicombo.pl — strona główna">aicombo<em>.pl</em></a>
+    <span class="mono">projekt demonstracyjny</span>
+  </div>
+</header>
+
+<!-- ================= 1. HERO ================= -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <!-- Ujawnienie AI nr 1/3: badge w hero -->
+      <span class="badge mono">🤖 Projekt demonstracyjny — postacie syntetyczne</span>
+      <h1>Marketing wideo dla małych firm <span class="dash">—</span> w całości tworzony przez AI</h1>
+      <p class="lead">aicombo.pl to projekt demonstracyjny. Pokazujemy, jak tanio i legalnie produkować Reelsy i TikToki dla usług lokalnych. Wszystkie postacie są syntetyczne.</p>
+      <div class="cta-row">
+        <!-- CTA nr 1: scroll do galerii + event GA4 (obsługa w JS na dole) -->
+        <button class="btn btn-primary" data-cta="zobacz_jak_to_dziala" data-loc="hero">Zobacz, jak to działa</button>
+        <!-- CTA nr 2: modal + event GA4 -->
+        <button class="btn btn-ghost" data-cta="zarezerwuj_demo" data-loc="hero">Zarezerwuj demo</button>
+      </div>
+    </div>
+
+    <!-- Sygnatura strony: ramka 9:16 „w trakcie generowania" -->
+    <div class="phone" aria-hidden="true">
+      <div class="phone-inner">
+        <span class="tag mono">postać syntetyczna · AI</span>
+        <div class="phone-bottom">
+          <div class="fake-bar b1"></div>
+          <div class="fake-bar b2"></div>
         </div>
-        <ul class="nav-links">
-            <li><a href="#pricing">Ceny</a></li>
-            <li><a href="#how">Jak to działa</a></li>
-            <li><a href="#faq">FAQ</a></li>
-        </ul>
-    </nav>
+      </div>
+      <div class="play">▶</div>
+    </div>
+  </div>
+</section>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>30 gotowych postów<br><span class="gradient-text">co miesiąc</span><br>Bez Twojego udziału.</h1>
-            <p class="hero-subtitle">Automatyzacja content marketingu dla małych firm w Warszawie. Zero spotkań, zero rozmów telefonicznych. Wszystko w Twoim Google Drive.</p>
-            
-            <div class="cta-buttons">
-                <button class="btn btn-primary" onclick="scrollToSection('pricing')">Wybierz pakiet</button>
-                <button class="btn btn-secondary" onclick="scrollToSection('how')">Jak to działa</button>
-            </div>
+<!-- ================= 2. JAK TO DZIAŁA ================= -->
+<section class="steps" id="jak-to-dziala">
+  <div class="wrap">
+    <span class="eyebrow mono">pipeline</span>
+    <h2>Jak to działa</h2>
+    <p class="sub">Trzy narzędzia, jeden powtarzalny proces — od briefu do gotowego pionowego wideo.</p>
+    <div class="steps-grid">
+      <article class="step">
+        <span class="mono">Krok 1 — Obraz</span>
+        <h3>Generujemy spójne postacie <span class="tool">(Nano Banana 2)</span></h3>
+        <p>Fotorealistyczny kadr bazowy z tą samą, syntetyczną postacią w każdym materiale.</p>
+      </article>
+      <article class="step">
+        <span class="mono">Krok 2 — Animacja</span>
+        <h3>Ożywiamy kadry do wideo <span class="tool">(Veo 3.1)</span></h3>
+        <p>Subtelny ruch nadany dopracowanemu obrazowi — podejście photo-first.</p>
+      </article>
+      <article class="step">
+        <span class="mono">Krok 3 — Montaż</span>
+        <h3>Składamy gotowy Reels <span class="tool">(CapCut + licencjonowane audio)</span></h3>
+        <p>Napisy, dźwięk i oznaczenie AI — materiał gotowy do publikacji.</p>
+      </article>
+    </div>
+  </div>
+</section>
 
-            <div class="trust-badges">
-                <div class="badge">Wynik w 7 dni</div>
-                <div class="badge">Brak umowy</div>
-                <div class="badge">RODO compliant</div>
-            </div>
-        </div>
-    </section>
+<!-- ================= 3. GALERIA DEMO ================= -->
+<section class="gallery" id="demo">
+  <div class="wrap">
+    <span class="eyebrow mono">portfolio koncepcji</span>
+    <h2>Materiały demo</h2>
+    <p class="sub">Pionowe 9:16, tak jak na Instagramie i TikToku. Każdy materiał jest oznaczony jako wygenerowany przez AI.</p>
 
-    <!-- Pricing Section -->
-    <section id="pricing">
-        <div class="container">
-            <h2>Proste ceny. Żadnych niespodzianek.</h2>
-            
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <div class="plan-name">Starter</div>
-                    <div class="plan-price">499<span>zł/mies</span></div>
-                    <ul class="plan-features">
-                        <li>8 postów Instagram</li>
-                        <li>2 artykuły SEO</li>
-                        <li>Grafiki z Twoich zdjęć</li>
-                        <li>Hashtagi + CTA</li>
-                        <li>Raport miesięczny</li>
-                    </ul>
-                    <button class="btn btn-secondary" onclick="handlePayment('starter')">Zamów teraz</button>
-                </div>
+    <div class="demo-grid">
+      <!-- ============================================================
+           ★ PLACEHOLDERY WIDEO (6 szt.)
+           Aby podmienić: usuń <div class="demo-ph">…</div>
+           i odkomentuj szablon <video> poniżej, wpisując ścieżkę pliku.
+           Style dla <video> są już gotowe (aspect 9:16, zaokrąglenia).
+           ============================================================ -->
+      <figure class="demo-card">
+        <div class="demo-ph"><span class="mono">demo wkrótce</span></div>
+        <!--
+        <video controls playsinline preload="metadata" poster="media/demo-01.jpg">
+          <source src="media/demo-01.mp4" type="video/mp4">
+        </video>
+        -->
+        <figcaption><span class="name">Transformacja</span><span class="mono">01</span></figcaption>
+      </figure>
 
-                <div class="pricing-card featured">
-                    <div class="plan-name">Growth</div>
-                    <div class="plan-price">799<span>zł/mies</span></div>
-                    <ul class="plan-features">
-                        <li>20 postów Instagram</li>
-                        <li>4 artykuły SEO</li>
-                        <li>Google Maps content</li>
-                        <li>Grafiki z Twoich zdjęć</li>
-                        <li>Strategia hashtagów</li>
-                        <li>Raport z analizą</li>
-                    </ul>
-                    <button class="btn btn-primary" onclick="handlePayment('growth')">Zamów teraz</button>
-                </div>
+      <figure class="demo-card">
+        <div class="demo-ph"><span class="mono">demo wkrótce</span></div>
+        <!-- <video controls playsinline preload="metadata"><source src="media/demo-02.mp4" type="video/mp4"></video> -->
+        <figcaption><span class="name">ASMR / hot towel</span><span class="mono">02</span></figcaption>
+      </figure>
 
-                <div class="pricing-card">
-                    <div class="plan-name">Pro</div>
-                    <div class="plan-price">1299<span>zł/mies</span></div>
-                    <ul class="plan-features">
-                        <li>30 postów Instagram</li>
-                        <li>8 artykułów SEO</li>
-                        <li>4 Reels (skrypt + edycja)</li>
-                        <li>Google Maps + LinkedIn</li>
-                        <li>Pełna strategia contentu</li>
-                        <li>Raport + rekomendacje</li>
-                    </ul>
-                    <button class="btn btn-secondary" onclick="handlePayment('pro')">Zamów teraz</button>
-                </div>
-            </div>
+      <figure class="demo-card">
+        <div class="demo-ph"><span class="mono">demo wkrótce</span></div>
+        <!-- <video controls playsinline preload="metadata"><source src="media/demo-03.mp4" type="video/mp4"></video> -->
+        <figcaption><span class="name">Edukacja</span><span class="mono">03</span></figcaption>
+      </figure>
 
-            <p style="text-align: center; color: var(--text-secondary); margin-top: 2rem; font-size: 0.9rem;">
-                Subskrypcja miesięczna. Anulujesz w każdej chwili bez kar. Pierwszy pakiet w ciągu 7 dni.
-            </p>
-        </div>
-    </section>
+      <figure class="demo-card">
+        <div class="demo-ph"><span class="mono">demo wkrótce</span></div>
+        <!-- <video controls playsinline preload="metadata"><source src="media/demo-04.mp4" type="video/mp4"></video> -->
+        <figcaption><span class="name">Skin fade</span><span class="mono">04</span></figcaption>
+      </figure>
 
-    <!-- How It Works -->
-    <section id="how">
-        <div class="container">
-            <h2>Od płatności do publikacji w 4 krokach</h2>
-            
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Płacisz online</h3>
-                    <p>Szybka płatność Przelewy24 lub karta. Trwa 2 minuty.</p>
-                </div>
+      <figure class="demo-card">
+        <div class="demo-ph"><span class="mono">demo wkrótce</span></div>
+        <!-- <video controls playsinline preload="metadata"><source src="media/demo-05.mp4" type="video/mp4"></video> -->
+        <figcaption><span class="name">Broda / detale</span><span class="mono">05</span></figcaption>
+      </figure>
 
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Wypełniasz formularz</h3>
-                    <p>Pytania o branżę, ton głosu, słowa kluczowe. Wgrywasz 10-15 zdjęć.</p>
-                </div>
+      <figure class="demo-card">
+        <div class="demo-ph"><span class="mono">demo wkrótce</span></div>
+        <!-- <video controls playsinline preload="metadata"><source src="media/demo-06.mp4" type="video/mp4"></video> -->
+        <figcaption><span class="name">Stylizacja</span><span class="mono">06</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
 
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>My pracujemy</h3>
-                    <p>W ciągu 7 dni pełen pakiet w Twoim Google Drive.</p>
-                </div>
+<!-- ================= 4. PRZEJRZYSTOŚĆ ================= -->
+<section class="trust">
+  <div class="wrap">
+    <span class="eyebrow mono">przejrzystość</span>
+    <h2>Dlaczego oznaczamy treści jako AI</h2>
+    <!-- Ujawnienie AI nr 2/3: osobny blok -->
+    <div class="panel">
+      <p class="big">Każdy materiał jest oznaczony jako wygenerowany przez AI — zgodnie z wymogami platform i EU AI Act (art. 50). Postacie nie są realnymi osobami.</p>
+      <ul>
+        <li>Etykieta „AI info" / AIGC włączona przy każdej publikacji na Instagramie i TikToku.</li>
+        <li>Wyniki narzędzi Google zawierają wbudowany, niewidoczny znak pochodzenia SynthID.</li>
+        <li>Żadna postać nie przedstawia realnego klienta — wizerunki są w pełni syntetyczne.</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h3>Akceptujesz i publikujesz</h3>
-                    <p>Jednym kliknięciem zatwierdzasz lub zaznaczasz poprawki.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- ================= 5. DRUGIE CTA ================= -->
+<section class="cta2">
+  <div class="wrap">
+    <span class="eyebrow mono">następny krok</span>
+    <h2>Zobacz proces albo zapytaj o taki content dla swojej firmy</h2>
+    <div class="cta-row">
+      <button class="btn btn-primary" data-cta="zobacz_jak_to_dziala" data-loc="bottom">Zobacz, jak to działa</button>
+      <button class="btn btn-ghost" data-cta="zarezerwuj_demo" data-loc="bottom">Zarezerwuj demo</button>
+    </div>
+  </div>
+</section>
 
-    <!-- FAQ -->
-    <section id="faq">
-        <div class="container">
-            <h2>Pytania i odpowiedzi</h2>
-            
-            <div class="faq-container">
-                <div class="faq-item active">
-                    <div class="faq-question">
-                        <span>Czy to AI generuje moje posty?</span>
-                        <div class="faq-toggle">▼</div>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Częściowo tak — teksty pisze AI, ale zawsze w oparciu o Twoje wytyczne (branża, ton głosu, słowa kluczowe) i Twoje zdjęcia. Każdy post jest sprawdzany przed dostawą. Algorytm Instagrama karze 100% AI content — my robimy hybrydę, która wygląda jak prawdziwy account.</p>
-                    </div>
-                </div>
+<!-- ================= 6. STOPKA ================= -->
+<footer>
+  <div class="wrap">
+    <!-- Ujawnienie AI nr 3/3: pełny disclaimer (tekst dosłowny z założeń) -->
+    <p class="disclaimer">aicombo.pl — projekt demonstracyjny realizowany w celach edukacyjnych/badawczych. Nie jest to oferta handlowa ani działający salon. Wszystkie treści wizualne zostały wygenerowane przez sztuczną inteligencję (obraz: Nano Banana 2, wideo: Veo 3.1); przedstawione postacie są syntetyczne i nie odnoszą się do realnych osób. Materiały oznaczone są jako AI zgodnie z art. 50 Rozporządzenia (UE) 2024/1689.</p>
+    <p class="disclaimer"><strong>Prywatność.</strong> Strona korzysta z Google Analytics 4 wyłącznie do anonimowego pomiaru ruchu w celach badawczych; mierzone są odsłony i kliknięcia — bez danych osobowych, formularzy i profilowania reklamowego. Cookies analityczne uruchamiane są dopiero po wyrażeniu zgody (Consent Mode v2); bez zgody wysyłane są wyłącznie anonimowe sygnały bez plików cookie. Kontakt e-mail jest w pełni dobrowolny, a fonty serwowane są z własnej domeny (bez zapytań do serwerów zewnętrznych).</p>
+    <div class="meta">
+      <span class="mono">aicombo.pl · 2026</span>
+      <!-- ★ PLACEHOLDER: adres e-mail kontaktowy (podmień też w modalu niżej) -->
+      <a class="mono" href="mailto:kontakt@aicombo.pl">kontakt@aicombo.pl</a>
+    </div>
+  </div>
+</footer>
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Co jeśli nie będę zadowolony z postów?</span>
-                        <div class="faq-toggle">▼</div>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Każdy pakiet zawiera 2 rundy poprawek. Zaznaczasz konkretne posty w formularzu, my regenerujemy w 48h. Jeśli pierwszy miesiąc nie spełni Twoich oczekiwań — zwracamy pieniądze.</p>
-                    </div>
-                </div>
+<!-- ================= MODAL „Zarezerwuj demo" ================= -->
+<div class="modal-backdrop" id="demoModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="Zamknij okno">✕</button>
+    <h3 id="modalTitle">Dziękujemy za zainteresowanie!</h3>
+    <p>aicombo.pl to projekt demonstracyjny — nie świadczymy jeszcze komercyjnych rezerwacji. Jeśli chcesz taki content dla swojej firmy, napisz:</p>
+    <!-- ★ PLACEHOLDER: adres e-mail (ten sam, co w stopce) -->
+    <a class="btn btn-primary" id="modalMail" href="mailto:kontakt@aicombo.pl?subject=aicombo.pl%20—%20zapytanie%20o%20content">Napisz: kontakt@aicombo.pl</a>
+  </div>
+</div>
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Czy muszę dostarczyć zdjęcia?</span>
-                        <div class="faq-toggle">▼</div>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Tak — 10-15 zdjęć Twojej firmy podczas onboardingu. Możesz wgrać z telefonu. Co miesiąc prosimy o 5-10 nowych zdjęć, ale jeśli nie zdążysz — używamy poprzednich.</p>
-                    </div>
-                </div>
+<!-- ================= BANER ZGODY (Consent Mode v2) ================= -->
+<div class="consent" id="consentBar">
+  <div class="wrap">
+    <p>Używamy Google Analytics 4 do anonimowego pomiaru ruchu w celach badawczych (praca dyplomowa). Bez Twojej zgody wysyłane są wyłącznie sygnały bez plików cookie.</p>
+    <div class="row">
+      <button class="btn btn-primary" id="consentYes">Zgadzam się</button>
+      <button class="btn btn-ghost" id="consentNo">Tylko bez cookies</button>
+    </div>
+  </div>
+</div>
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Czy mogę anuować w każdej chwili?</span>
-                        <div class="faq-toggle">▼</div>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Tak. Miesiąc do miesiąca. Anulujesz w każdej chwili bez kar i kosztów. Po anulowaniu otrzymujesz jeszcze opłacony miesiąc, potem koniec.</p>
-                    </div>
-                </div>
+<script>
+/* ============================================================
+   1) ODCZYT PARAMETRÓW UTM Z ADRESU URL
+   Tu strona odczytuje utm_source / utm_medium / utm_campaign /
+   utm_content z linku, którym użytkownik wszedł z bio IG/TikTok.
+   utm_content koduje numer posta + wariant A/B (np. "p03_b").
+   ============================================================ */
+const params = new URLSearchParams(window.location.search);
+const utm = {
+  utm_source:   params.get('utm_source')   || '(brak)',
+  utm_medium:   params.get('utm_medium')   || '(brak)',
+  utm_campaign: params.get('utm_campaign') || '(brak)',
+  utm_content:  params.get('utm_content')  || '(brak)'
+};
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Czy moje dane są bezpieczne?</span>
-                        <div class="faq-toggle">▼</div>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Tak. Wszystkie dane przetwarzamy zgodnie z RODO, serwery są w UE, a przed startem podpisujesz umowę powierzenia danych. Pełna Polityka Prywatności jest dostępna na stronie.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+/* ============================================================
+   2) EVENT GA4 PO KLIKNIĘCIU CTA  ← GŁÓWNY WSKAŹNIK BADANIA
+   Oba przyciski (w hero i na dole) wysyłają TEN SAM event
+   "cta_click" z parametrami: wariant przycisku, miejsce na
+   stronie oraz wszystkie odczytane UTM (w tym utm_content).
+   Podgląd na żywo: GA4 → Administracja → DebugView.
+   ============================================================ */
+function trackCta(variant, location){
+  if (typeof gtag === 'function'){
+    gtag('event', 'cta_click', {
+      cta_variant:  variant,            // "zobacz_jak_to_dziala" | "zarezerwuj_demo"
+      cta_location: location,           // "hero" | "bottom"
+      utm_source:   utm.utm_source,
+      utm_medium:   utm.utm_medium,
+      utm_campaign: utm.utm_campaign,
+      utm_content:  utm.utm_content     // np. "p03_b" → numer posta + wariant A/B
+    });
+  }
+}
 
-    <!-- CTA Section -->
-    <section>
-        <div class="container">
-            <div class="cta-section">
-                <h2>Twój profil zasługuje na więcej<br>niż 2 posty w miesiącu.</h2>
-                <p style="color: var(--text-secondary); margin-bottom: 2rem;">Zacznij od 499 zł. Pierwsze posty w ciągu 7 dni. Bez spotkań.</p>
-                <button class="btn btn-primary" onclick="scrollToSection('pricing')">Wybierz pakiet →</button>
-            </div>
-        </div>
-    </section>
+/* ---- Obsługa obu CTA ---- */
+const modal = document.getElementById('demoModal');
+let lastFocused = null;
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 aicombo. Wszystkie prawa zastrzeżone.</p>
-        <p>RODO compliant • Serwery EU • Made in Warsaw 🇵🇱</p>
-        <p style="margin-top: 1rem; font-size: 0.85rem;">
-            <a href="#" style="color: var(--primary); text-decoration: none;">Polityka Prywatności</a> • 
-            <a href="#" style="color: var(--primary); text-decoration: none;">Regulamin</a>
-        </p>
-    </footer>
+document.querySelectorAll('[data-cta]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const variant = btn.dataset.cta;
+    const loc = btn.dataset.loc;
+    trackCta(variant, loc); // ← wysyłka eventu GA4
 
-    <script>
-        // FAQ Toggle
-        document.querySelectorAll('.faq-item').forEach(item => {
-            item.querySelector('.faq-question').addEventListener('click', () => {
-                item.classList.toggle('active');
-            });
+    if (variant === 'zobacz_jak_to_dziala'){
+      // płynny scroll do galerii demo
+      document.getElementById('demo').scrollIntoView({behavior:'smooth'});
+    } else {
+      // otwarcie modalu potwierdzenia (brak realnej rezerwacji)
+      lastFocused = btn;
+      modal.classList.add('open');
+      document.getElementById('modalClose').focus();
+    }
+  });
+});
+
+/* ---- Zamykanie modalu: przycisk, tło, Escape ---- */
+function closeModal(){
+  modal.classList.remove('open');
+  if (lastFocused) lastFocused.focus();
+}
+document.getElementById('modalClose').addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+});
+
+/* ============================================================
+   2b) EVENT GA4 "contact_click" — GŁĘBSZY ETAP LEJKA
+   Kliknięcie linku mailto w modalu wysyła OSOBNY event z tymi
+   samymi parametrami UTM co cta_click oraz cta_location="modal".
+   Sekwencja lejka w danych: cta_click → contact_click.
+   ============================================================ */
+document.getElementById('modalMail').addEventListener('click', () => {
+  if (typeof gtag === 'function'){
+    gtag('event', 'contact_click', {
+      cta_location: 'modal',
+      utm_source:   utm.utm_source,
+      utm_medium:   utm.utm_medium,
+      utm_campaign: utm.utm_campaign,
+      utm_content:  utm.utm_content   // np. "p03_b" — numer posta + wariant A/B
+    });
+  }
+});
+
+/* ============================================================
+   Focus-trap (WCAG): gdy modal jest otwarty, Tab / Shift+Tab
+   krąży wyłącznie po elementach wewnątrz modalu. Powrót fokusu
+   na przycisk otwierający realizuje closeModal() (lastFocused).
+   ============================================================ */
+modal.addEventListener('keydown', e => {
+  if (e.key !== 'Tab' || !modal.classList.contains('open')) return;
+  const focusables = modal.querySelectorAll('button, [href]');
+  const first = focusables[0];
+  const last  = focusables[focusables.length - 1];
+  if (e.shiftKey && document.activeElement === first){
+    e.preventDefault(); last.focus();
+  } else if (!e.shiftKey && document.activeElement === last){
+    e.preventDefault(); first.focus();
+  }
+});
+
+/* ============================================================
+   2c) EVENT GA4 "gallery_view" — ENGAGEMENT (stopień 2 lejka)
+   Wysyłany RAZ na wizytę, gdy użytkownik doscrolluje do galerii
+   demo (co najmniej 10% sekcji w viewporcie — próg niski celowo:
+   sekcja jest wyższa niż ekran telefonu).
+   Pełny lejek: page_view → gallery_view → cta_click → contact_click.
+   ============================================================ */
+(function(){
+  const gallery = document.getElementById('demo');
+  if (!gallery || !('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver((entries) => {
+    if (entries.some(en => en.isIntersecting)){
+      io.disconnect(); // gwarancja pojedynczego wysłania
+      if (typeof gtag === 'function'){
+        gtag('event', 'gallery_view', {
+          utm_source:   utm.utm_source,
+          utm_medium:   utm.utm_medium,
+          utm_campaign: utm.utm_campaign,
+          utm_content:  utm.utm_content
         });
+      }
+    }
+  }, {threshold: 0.1});
+  io.observe(gallery);
+})();
 
-        // Smooth Scroll
-        function scrollToSection(id) {
-            const element = document.getElementById(id);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
+/* ============================================================
+   3) BANER ZGODY (Consent Mode v2)
+   Domyślnie: analytics_storage = denied (ustawione w <head>).
+   "Zgadzam się"  → zgoda na cookies analityczne (pełny pomiar).
+   "Tylko bez cookies" → pozostaje denied; eventy nadal liczone
+   jako anonimowe pingi. Wybór zapamiętywany w localStorage
+   (z zabezpieczeniem try/catch na wypadek blokady storage).
+   ============================================================ */
+const bar = document.getElementById('consentBar');
+let stored = null;
+try { stored = localStorage.getItem('aicombo_consent'); } catch(e){}
 
-        // Payment Handler
-        function handlePayment(plan) {
-            const plans = {
-                starter: { name: 'Starter', price: 499 },
-                growth: { name: 'Growth', price: 799 },
-                pro: { name: 'Pro', price: 1299 }
-            };
-
-            const selectedPlan = plans[plan];
-            
-            // Redirect to Stripe or Przelewy24
-            // For now, show a message
-            alert(`Pakiet: ${selectedPlan.name}\nCena: ${selectedPlan.price} zł\n\nZa moment zostaniesz przekierowany na stronę płatności...`);
-            
-            // You would integrate actual payment gateway here
-            // window.location.href = 'https://your-stripe-url.com?plan=' + plan;
-        }
-    </script>
+if (stored === 'granted'){
+  gtag('consent','update',{analytics_storage:'granted'});
+} else if (stored !== 'denied'){
+  bar.classList.add('show');
+}
+document.getElementById('consentYes').addEventListener('click', () => {
+  gtag('consent','update',{analytics_storage:'granted'});
+  try { localStorage.setItem('aicombo_consent','granted'); } catch(e){}
+  bar.classList.remove('show');
+});
+document.getElementById('consentNo').addEventListener('click', () => {
+  try { localStorage.setItem('aicombo_consent','denied'); } catch(e){}
+  bar.classList.remove('show');
+});
+</script>
 </body>
 </html>
