@@ -19,13 +19,11 @@
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230C0B09'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' fill='%23C8A35F' text-anchor='middle'%3Ea.%3C/text%3E%3C/svg%3E">
 
-<!-- Typografia self-hosted (woff2 w folderze fonts/): Marcellus + Instrument Sans + IBM Plex Mono.
+<!-- Typografia self-hosted (woff2): Marcellus + Instrument Sans + IBM Plex Mono.
      Brak zapytań do CDN Google Fonts = szybciej + brak przekazywania IP użytkownika do Google (GDPR). -->
 
 <!-- ============================================================
      GOOGLE ANALYTICS 4 + CONSENT MODE v2
-     ★ PLACEHOLDER: podmień G-SGJZ51TCNE na własny Measurement ID
-       (w DWÓCH miejscach: w src skryptu i w gtag('config', ...)).
      Consent Mode: domyślnie brak zgody na cookies — eventy i tak
      są wysyłane jako anonimowe "cookieless pings", więc kliknięcia
      CTA (główny wskaźnik badania) są liczone także bez zgody.
@@ -45,11 +43,11 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-SGJZ51TCNE"></script>
 <script>
   gtag('js', new Date());
-  gtag('config', 'G-SGJZ51TCNE'); // ★ PLACEHOLDER: Measurement ID
+  gtag('config', 'G-SGJZ51TCNE');
 </script>
 
 <style>
-/* ============ FONTY SELF-HOSTED (folder fonts/) ============ */
+/* ============ FONTY SELF-HOSTED ============ */
 @font-face{
   font-family:"Marcellus";
   src:url("marcellus.woff2") format("woff2");
@@ -453,7 +451,6 @@ footer .meta{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline}
     <p class="disclaimer"><strong>Prywatność.</strong> Strona korzysta z Google Analytics 4 wyłącznie do anonimowego pomiaru ruchu w celach badawczych; mierzone są odsłony i kliknięcia — bez danych osobowych, formularzy i profilowania reklamowego. Cookies analityczne uruchamiane są dopiero po wyrażeniu zgody (Consent Mode v2); bez zgody wysyłane są wyłącznie anonimowe sygnały bez plików cookie. Kontakt e-mail jest w pełni dobrowolny, a fonty serwowane są z własnej domeny (bez zapytań do serwerów zewnętrznych).</p>
     <div class="meta">
       <span class="mono">aicombo.pl · 2026</span>
-      <!-- ★ PLACEHOLDER: adres e-mail kontaktowy (podmień też w modalu niżej) -->
       <a class="mono" href="mailto:kontakt@aicombo.pl">kontakt@aicombo.pl</a>
     </div>
   </div>
@@ -465,7 +462,6 @@ footer .meta{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline}
     <button class="modal-close" id="modalClose" aria-label="Zamknij okno">✕</button>
     <h3 id="modalTitle">Dziękujemy za zainteresowanie!</h3>
     <p>aicombo.pl to projekt demonstracyjny — nie świadczymy jeszcze komercyjnych rezerwacji. Jeśli chcesz taki content dla swojej firmy, napisz:</p>
-    <!-- ★ PLACEHOLDER: adres e-mail (ten sam, co w stopce) -->
     <a class="btn btn-primary" id="modalMail" href="mailto:kontakt@aicombo.pl?subject=aicombo.pl%20—%20zapytanie%20o%20content">Napisz: kontakt@aicombo.pl</a>
   </div>
 </div>
