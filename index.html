@@ -17,7 +17,8 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230C0B09'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' fill='%23C8A35F' text-anchor='middle'%3Ea.%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="logo-mark.png">
 
 <!-- Typografia self-hosted (woff2): Marcellus + Instrument Sans + IBM Plex Mono.
      Brak zapytań do CDN Google Fonts = szybciej + brak przekazywania IP użytkownika do Google (GDPR). -->
@@ -111,8 +112,10 @@ section{padding:72px 0}
   border-bottom:1px solid var(--line);
 }
 .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
-.wordmark{font-size:1.3rem;color:var(--bone);text-decoration:none}
+.wordmark{display:inline-flex;align-items:center;font-size:1.3rem;color:var(--bone);text-decoration:none}
 .wordmark em{font-style:normal;color:var(--brass)}
+.brand-mark{width:30px;height:30px;display:block;flex:none;margin-right:.5rem}
+@media(max-width:480px){.brand-mark{width:26px;height:26px}}
 .topbar .mono{color:var(--smoke)}
 @media(max-width:480px){.topbar .mono{font-size:.6rem}}
 
@@ -174,6 +177,8 @@ section{padding:72px 0}
 .phone-bottom{display:flex;flex-direction:column;gap:8px}
 .fake-bar{height:7px;border-radius:99px;background:rgba(237,231,218,.12)}
 .fake-bar.b1{width:72%}.fake-bar.b2{width:46%}
+.phone-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;background:#000;display:block}
+.phone-inner::after{content:"";position:absolute;left:0;right:0;bottom:0;height:38%;background:linear-gradient(to top,rgba(7,6,4,.55),transparent);z-index:-1;pointer-events:none}
 .play{
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
   width:62px;height:62px;border-radius:50%;
@@ -296,7 +301,7 @@ footer .meta{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline}
 <!-- ================= TOP BAR ================= -->
 <header class="topbar">
   <div class="wrap">
-    <a class="wordmark" href="#" aria-label="aicombo.pl — strona główna">aicombo<em>.pl</em></a>
+    <a class="wordmark" href="#" aria-label="aicombo.pl — strona główna"><img class="brand-mark" src="logo-mark.png" alt="" width="30" height="30">aicombo<em>.pl</em></a>
     <span class="mono">projekt demonstracyjny</span>
   </div>
 </header>
@@ -317,16 +322,14 @@ footer .meta{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline}
       </div>
     </div>
 
-    <!-- Sygnatura strony: ramka 9:16 „w trakcie generowania" -->
-    <div class="phone" aria-hidden="true">
+    <!-- Sygnatura strony: ramka 9:16 z prawdziwym demo (AI) -->
+    <div class="phone" aria-label="Przykładowe demo wideo wygenerowane przez AI">
+      <video class="phone-video" autoplay muted loop playsinline preload="metadata" poster="demo-06.jpg">
+        <source src="demo-06.mp4" type="video/mp4">
+      </video>
       <div class="phone-inner">
         <span class="tag mono">postać syntetyczna · AI</span>
-        <div class="phone-bottom">
-          <div class="fake-bar b1"></div>
-          <div class="fake-bar b2"></div>
-        </div>
       </div>
-      <div class="play">▶</div>
     </div>
   </div>
 </section>
